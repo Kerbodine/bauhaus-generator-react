@@ -29,6 +29,7 @@ export default function ColorInput({ index, value, setValue, deleteColor }) {
           placeholder="000000"
           value={value}
           pattern="^([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$"
+          required
           onChange={(e) => {
             setValue(index, e);
           }}
@@ -36,7 +37,7 @@ export default function ColorInput({ index, value, setValue, deleteColor }) {
       </div>
       <button
         className="block lg:hidden group-hover:block text-gray-500 text-xl"
-        onClick={() => deleteColor(index)}
+        onClick={(e) => deleteColor(index, e)}
       >
         <BiX />
       </button>
