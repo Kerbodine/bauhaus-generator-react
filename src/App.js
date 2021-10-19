@@ -1,12 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  BiDownArrow,
-  BiDownArrowCircle,
-  BiDownload,
-  BiPlus,
-} from "react-icons/bi";
+import { BiDownArrowCircle, BiPlus } from "react-icons/bi";
 import ColorInput from "./components/ColorInput";
-import ShapeSelect from "./components/ShapeSelect";
 import { ReactComponent as Placeholder } from "./placeholder.svg";
 import {
   square,
@@ -29,20 +23,6 @@ function App() {
   const [colors, setColors] = useState(["d4d4d4"]);
   const [svg, setSvg] = useState(null);
   const svgWrapperRef = useRef();
-
-  const [shapeSettings, setShapeSettings] = useState({
-    square: true,
-    vSquare: true,
-    hSquare: true,
-    cornerSquare: true,
-    circle: true,
-    diamond: true,
-    quarterCircle: true,
-    dots: true,
-    semiCircles: true,
-    hSemiCircles: true,
-    vSemiCircles: true,
-  });
 
   const changeWidth = (e) => {
     setWidth(e.target.value);
@@ -250,11 +230,6 @@ function App() {
                 >
                   <BiPlus />
                 </button>
-              </div>
-              <div className="w-full md:w-1/2 ml-auto">
-                {Object.keys(shapeSettings).map((shape) => (
-                  <ShapeSelect shape={shape} selected={shapeSettings[shape]} />
-                ))}
               </div>
             </div>
             <div className="flex gap-4 mt-4">
