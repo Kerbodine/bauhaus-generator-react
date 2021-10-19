@@ -6,6 +6,7 @@ import {
   BiPlus,
 } from "react-icons/bi";
 import ColorInput from "./components/ColorInput";
+import ShapeSelect from "./components/ShapeSelect";
 import { ReactComponent as Placeholder } from "./placeholder.svg";
 import {
   square,
@@ -28,6 +29,20 @@ function App() {
   const [colors, setColors] = useState(["d4d4d4"]);
   const [svg, setSvg] = useState(null);
   const svgWrapperRef = useRef();
+
+  const [shapeSettings, setShapeSettings] = useState({
+    square: true,
+    vSquare: true,
+    hSquare: true,
+    cornerSquare: true,
+    circle: true,
+    diamond: true,
+    quarterCircle: true,
+    dots: true,
+    semiCircles: true,
+    hSemiCircles: true,
+    vSemiCircles: true,
+  });
 
   const changeWidth = (e) => {
     setWidth(e.target.value);
@@ -155,7 +170,7 @@ function App() {
   return (
     <div className="App w-screen h-screen overflow-hidden p-4 sm:p-8 lg:p-16">
       <div className="w-full h-full bg-white border-2 border-gray-300 rounded-2xl p-8 flex flex-col md:flex-row gap-4 lg:gap-8 overflow-y-auto">
-        <div className="pl-8 pt-8 lg:overflow-y-auto lg:overflow-x-hidden">
+        <div className="pl-4 pt-4 pr-4 md:pr-0 md:pt-8 md:pl-8 lg:overflow-y-auto lg:overflow-x-hidden">
           <h1 className="text-gray-700 font-semibold text-4xl">
             Bauhaus Pattern Generator
           </h1>
@@ -214,26 +229,33 @@ function App() {
             <label className="text-sm block font-semibold text-gray-500 mt-4 mb-1">
               Colors:
             </label>
-            <div className="">
-              <div className="flex flex-row md:flex-col flex-wrap -ml-7 -mr-4 gap-2">
-                {colors.map((color, index) => (
-                  <ColorInput
-                    key={index}
-                    index={index}
-                    value={color}
-                    setValue={updateColor}
-                    deleteColor={deleteColor}
-                  />
+            <div className="flex flex-col xs:flex-row gap-8 md:gap-0">
+              <div className="w-full md:w-1/2">
+                <div className="flex flex-row md:flex-col flex-wrap -ml-7 -mr-4 gap-2">
+                  {colors.map((color, index) => (
+                    <ColorInput
+                      key={index}
+                      index={index}
+                      value={color}
+                      setValue={updateColor}
+                      deleteColor={deleteColor}
+                    />
+                  ))}
+                </div>
+                <button
+                  className={`w-8 h-8 mt-2 rounded-md border-2 border-dashed hover:border-solid transition-all hover:bg-gray-100 border-gray-300 text-gray-300 text-2xl justify-center items-center ${
+                    colors.length > 5 ? "hidden" : "flex"
+                  }`}
+                  onClick={(e) => addColor(e)}
+                >
+                  <BiPlus />
+                </button>
+              </div>
+              <div className="w-full md:w-1/2 ml-auto">
+                {Object.keys(shapeSettings).map((shape) => (
+                  <ShapeSelect shape={shape} selected={shapeSettings[shape]} />
                 ))}
               </div>
-              <button
-                className={`w-8 h-8 mt-2 rounded-md border-2 border-dashed hover:border-solid transition-all hover:bg-gray-100 border-gray-300 text-gray-300 text-2xl justify-center items-center ${
-                  colors.length > 5 ? "hidden" : "flex"
-                }`}
-                onClick={(e) => addColor(e)}
-              >
-                <BiPlus />
-              </button>
             </div>
             <div className="flex gap-4 mt-4">
               <button
@@ -254,7 +276,7 @@ function App() {
             </div>
           </form>
         </div>
-        <div className="ml-auto w-full md:w-1/2 h-full max-w-[600px] max-h-[600px] border-2 rounded-2xl border-gray-300 flex items-center justify-center overflow-hidden">
+        <div className="ml-auto w-full md:w-1/2 h-full max-w-[600px] max-h-[600px] min-h-[240px] border-2 rounded-2xl border-gray-300 flex items-center justify-center overflow-hidden">
           {!svg ? (
             <Placeholder className="w-48 h-48 p-4 min-w-[8rem] min-h-[8rem]" />
           ) : (

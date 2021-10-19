@@ -9,6 +9,9 @@ module.exports = {
       colors: {
         gray: colors.trueGray,
       },
+      screens: {
+        xs: "420px",
+      },
     },
   },
   variants: {
