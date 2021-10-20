@@ -5,6 +5,7 @@ import {
   BiExport,
   BiImport,
   BiPlus,
+  BiReset,
 } from "react-icons/bi";
 import ColorInput from "./components/ColorInput";
 import InputLabel from "./components/InputLabel";
@@ -199,6 +200,13 @@ function App() {
     fileDownload("config.json", file);
   };
 
+  const resetConfig = () => {
+    setWidth(8);
+    setHeight(8);
+    setSize(20);
+    setColors([]);
+  };
+
   useEffect(() => {
     if (svg !== null) {
       svgWrapperRef.current.innerHTML = svg;
@@ -277,42 +285,19 @@ function App() {
                   </div>
                   <div className="p-2">
                     <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          className={`${
-                            active ? "bg-gray-700 text-white" : "text-gray-700"
-                          } group flex rounded-md items-center w-full px-1.5 py-1.5 text-sm`}
-                        >
-                          {active ? null : null}
-                          Archive
-                        </button>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          className={`${
-                            active ? "bg-gray-700 text-white" : "text-gray-700"
-                          } group flex rounded-md items-center w-full px-1.5 py-1.5 text-sm`}
-                        >
-                          {active ? null : null}
-                          Move
-                        </button>
-                      )}
-                    </Menu.Item>
-                  </div>
-                  <div className="p-2">
-                    <Menu.Item disabled>
                       {({ active, disabled }) => (
                         <button
                           className={`${
-                            disabled
-                              ? "bg-gray-700 text-white"
-                              : "text-gray-700"
-                          } group cursor-not-allowed flex rounded-md items-center w-full px-1.5 py-1.5 text-sm`}
+                            active ? "bg-gray-700 text-white" : "text-gray-700"
+                          } group flex rounded-md items-center w-full px-1.5 py-1.5 text-sm`}
+                          onClick={resetConfig}
                         >
-                          {active ? null : null}
-                          Delete
+                          <BiReset
+                            className={`text-2xl mr-1 ${
+                              active ? "text-white" : "text-gray-700"
+                            }`}
+                          />
+                          Reset
                         </button>
                       )}
                     </Menu.Item>
