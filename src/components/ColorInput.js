@@ -14,19 +14,20 @@ export default function ColorInput({ index, value, setValue, deleteColor }) {
 
   return (
     <div className="flex items-center gap-2 group">
-      <div
-        className={`rounded-md w-5 h-5 bg-gray-500 text-white ${
-          !validColor ? "!bg-gray-700 flex items-center justify-center" : ""
-        }`}
-        style={{ backgroundColor: "#" + value }}
-      >
-        {!validColor ? <BiErrorCircle /> : null}
-      </div>
-      <div className="w-24 h-8 relative">
-        <label className="absolute mt-1 ml-2 text-gray-500 font-bold">#</label>
+      <div className="w-[6.5rem] h-8 relative">
+        <div
+          className={`absolute ml-1.5 mt-1.5 rounded-md w-5 h-5 bg-gray-500 text-white ${
+            !validColor ? "!bg-gray-700 flex items-center justify-center" : ""
+          }`}
+          style={{ backgroundColor: "#" + value }}
+        >
+          {!validColor ? <BiErrorCircle /> : null}
+        </div>
+        <label className="absolute mt-1 ml-8 text-gray-500 font-bold">#</label>
         <input
-          className="w-full h-full rounded-md bg-gray-100 text-sm pl-5 pr-2 font-mono text-gray-500"
+          className="w-full h-8 rounded-md bg-gray-100 text-sm pl-11 pr-2 font-mono text-gray-500"
           placeholder="000000"
+          autoFocus
           value={value}
           pattern="^([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$"
           required
@@ -35,12 +36,12 @@ export default function ColorInput({ index, value, setValue, deleteColor }) {
           }}
         />
       </div>
-      <button
-        className="block lg:hidden group-hover:block text-gray-500 text-xl"
+      <div
+        className="cursor-pointer text-gray-500 text-xl"
         onClick={(e) => deleteColor(index, e)}
       >
         <BiX />
-      </button>
+      </div>
     </div>
   );
 }
