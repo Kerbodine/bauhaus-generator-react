@@ -1,12 +1,5 @@
-import { Fragment, useEffect, useRef, useState } from "react";
-import {
-  BiDotsVerticalRounded,
-  BiDownArrowCircle,
-  BiExport,
-  BiImport,
-  BiPlus,
-  BiReset,
-} from "react-icons/bi";
+import { useEffect, useRef, useState } from "react";
+import { BiDownArrowCircle, BiPlus } from "react-icons/bi";
 import ColorInput from "./components/ColorInput";
 import InputLabel from "./components/InputLabel";
 import NumericalInput from "./components/NumericalInput";
@@ -24,7 +17,7 @@ import {
   hSemiCircles,
   vSemiCircles,
 } from "./Shapes";
-import { Menu, Transition } from "@headlessui/react";
+import Options from "./components/Options";
 
 function App() {
   const [width, setWidth] = useState(
@@ -140,9 +133,9 @@ function App() {
       `;
       }
     }
-    setSvg(`<svg width="100%" height="100%" viewBox="0 0 ${width * size} ${
-      height * size
-    }" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    setSvg(`<svg role="img" width="100%" height="100%" viewBox="0 0 ${
+      width * size
+    } ${height * size}" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <clipPath id="square">
           <rect width="${size}" height="${size}" />
@@ -169,10 +162,7 @@ function App() {
   // Adds boilerplate code to svg and downloads it client side
   const downloadSVG = (e) => {
     e.preventDefault();
-    const file = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-    ${svg}`;
-    fileDownload("output.svg", file);
+    fileDownload("output.svg", svg);
   };
 
   // Initialize file input and read json file contents
@@ -222,89 +212,28 @@ function App() {
   }, [width, height, size]);
 
   return (
-    <div className="App w-screen h-screen overflow-hidden p-4 sm:p-8">
-      <div className="w-full h-full bg-white border-2 border-gray-300 rounded-2xl p-8 flex flex-col md:flex-row overflow-y-auto">
-        <div className="pl-4 pt-4 pr-4 pb-4 md:pb-0 md:pr-8 md:pt-8 md:pl-8 lg:overflow-y-auto lg:overflow-x-hidden">
-          <div className="flex w-full">
+    <div className="App w-screen h-screen overflow-hidden p-4 flex sm:items-center justify-center">
+      <div className="app-container">
+        <div className="result-box">
+          {!svg ? (
+            <Placeholder className="w-48 h-48 p-4 min-w-[8rem] min-h-[8rem]" />
+          ) : (
+            <div
+              ref={svgWrapperRef}
+              className="result-container relative w-full h-full"
+            ></div>
+          )}
+        </div>
+        <div className="md:pb-0 lg:overflow-y-auto lg:overflow-x-hidden w-full">
+          <div className="flex">
             <h1 className="text-gray-700 font-semibold text-4xl leading-8 mb-2 mr-4">
               Bauhaus Pattern Generator
             </h1>
-            <Menu as="div" className="relative">
-              <div>
-                <Menu.Button className="w-8 h-8 flex items-center justify-center text-2xl text-white rounded-md bg-gray-700 hover:bg-gray-500 focus:outline-none">
-                  <BiDotsVerticalRounded />
-                </Menu.Button>
-              </div>
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
-              >
-                <Menu.Items className="absolute right-0 w-40 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md border-2 border-gray-300 focus:outline-none">
-                  <div className="p-2">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          className={`${
-                            active ? "bg-gray-700 text-white" : "text-gray-700"
-                          } group flex rounded-md items-center w-full px-1.5 py-1.5 text-sm`}
-                          onClick={() => {
-                            fileReader.current.click();
-                          }}
-                        >
-                          <BiImport
-                            className={`text-2xl mr-1 ${
-                              active ? "text-white" : "text-gray-700"
-                            }`}
-                          />
-                          Import config
-                        </button>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          className={`${
-                            active ? "bg-gray-700 text-white" : "text-gray-700"
-                          } group flex rounded-md items-center w-full px-1.5 py-1.5 text-sm`}
-                          onClick={downloadConfig}
-                        >
-                          <BiExport
-                            className={`text-2xl mr-1 ${
-                              active ? "text-white" : "text-gray-700"
-                            }`}
-                          />
-                          Export config
-                        </button>
-                      )}
-                    </Menu.Item>
-                  </div>
-                  <div className="p-2">
-                    <Menu.Item>
-                      {({ active, disabled }) => (
-                        <button
-                          className={`${
-                            active ? "bg-gray-700 text-white" : "text-gray-700"
-                          } group flex rounded-md items-center w-full px-1.5 py-1.5 text-sm`}
-                          onClick={resetConfig}
-                        >
-                          <BiReset
-                            className={`text-2xl mr-1 ${
-                              active ? "text-white" : "text-gray-700"
-                            }`}
-                          />
-                          Reset
-                        </button>
-                      )}
-                    </Menu.Item>
-                  </div>
-                </Menu.Items>
-              </Transition>
-            </Menu>
+            <Options
+              fileReader={fileReader}
+              downloadConfig={downloadConfig}
+              resetConfig={resetConfig}
+            />
           </div>
           <p className="text-gray-500 text-md">
             Created by
@@ -385,16 +314,6 @@ function App() {
               ) : null}
             </div>
           </form>
-        </div>
-        <div className="ml-auto w-full md:w-1/2 h-full max-w-[600px] max-h-[600px] min-h-[240px] border-2 rounded-2xl border-gray-300 flex items-center justify-center overflow-hidden">
-          {!svg ? (
-            <Placeholder className="w-48 h-48 p-4 min-w-[8rem] min-h-[8rem]" />
-          ) : (
-            <div
-              ref={svgWrapperRef}
-              className="result-container relative w-full h-full"
-            ></div>
-          )}
         </div>
       </div>
       <input

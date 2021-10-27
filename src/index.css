@@ -10,3 +10,11 @@
   bottom: 0;
   margin: auto;
 }
+
+.result-box {
+  @apply flex-none md:my-auto w-[calc(100vw-100px)] h-[calc(100vw-100px)] md:w-[45vw] md:h-[45vw] lg:max-w-[600px] lg:max-h-[600px] border-2 rounded-2xl border-gray-300 flex items-center justify-center overflow-hidden;
+}
+
+.app-container {
+  @apply w-full max-w-7xl bg-white border-2 border-gray-300 rounded-2xl p-8 flex flex-col md:flex-row overflow-y-auto gap-8;
+}
